@@ -5,35 +5,35 @@ sudo apt update
 sudo apt -y install git subversion dialog
 
 # download the raspi-teletext git repository and compile it
-git clone https://github.com/ali1234/raspi-teletext.git /storage/raspi-teletext
+sudo git clone https://github.com/ali1234/raspi-teletext.git /storage/raspi-teletext
 cd /storage/raspi-teletext
-make
+sudo make
 
 # System sets SD video on bootup 
 sudo sed -i s/#sdtv_mode/sdtv_mode/ /boot/config.txt
 
 # download the vbit2 git repository
-git clone https://github.com/peterkvt80/vbit2.git /storage/vbit2
+sudo git clone https://github.com/peterkvt80/vbit2.git /storage/vbit2
 cd /storage/vbit2
 
 # switch to the latest release branch and compile it
 latestTag=`curl --silent "https://api.github.com/repos/peterkvt80/vbit2/releases/latest" | grep -Po '"tag_name": "\K.*?(?=")'`
 git checkout $latestTag
-make
+sudo make
 
 # create links
-mkdir -p /storage/.local/bin
-ln -s -f `pwd`/vbit2 /storage/.local/bin/
-ln -s -f `pwd`/runvbit2.sh /storage/.local/bin/
-ln -s -f `pwd`/vbit-config /storage/.local/bin/
+sudo mkdir -p /storage/.local/bin
+sudo ln -s -f `pwd`/vbit2 /storage/.local/bin/
+sudo ln -s -f `pwd`/runvbit2.sh /storage/.local/bin/
+sudo ln -s -f `pwd`/vbit-config /storage/.local/bin/
 
 # install systemd user scripts
-mkdir -p /storage/.local/share/systemd/user
-cp vbit2.service /storage/.local/share/systemd/user
-cp teletext-update.timer /storage/.local/share/systemd/user
-cp teletext-update.service /storage/.local/share/systemd/user
+sudo mkdir -p /storage/.local/share/systemd/user
+sudo cp vbit2.service /storage/.local/share/systemd/user
+sudo cp teletext-update.timer /storage/.local/share/systemd/user
+sudo cp teletext-update.service /storage/.local/share/systemd/user
 
-mkdir -p /storage/.config/systemd/user/
+sudo mkdir -p /storage/.config/systemd/user/
 systemctl --user daemon-reload
 loginctl enable-linger
 
